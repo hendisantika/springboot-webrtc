@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spring Boot WebRTC Demo</title>
+    <link href="/css/styles.css" rel="stylesheet" type="text/css">
+</head>
+<body onbeforeunload="disconnect();">
+<div id="selectedVideosContainer">
+    <video id="remoteView"></video>
+    <video id="selfView"></video>
+</div>
+<div id="remoteVideosContainer"></div>
+
+<script src='/js/adapter-latest.js'></script>
+<script src='/js/main.js'></script>
+</body>
+</html>
