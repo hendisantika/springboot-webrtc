@@ -84,4 +84,21 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    private void removeUserAndSendLogout(final String sessionId) {
+
+        connectedUsers.remove(sessionId);
+
+        // send the message to all other peers, somebody(sessionId) leave.
+        final SignalMessage menOut = new SignalMessage();
+        menOut.setType(TYPE_LOGOUT);
+        menOut.setSender(sessionId);
+
+        connectedUsers.values().forEach(webSocket -> {
+            try {
+                webSocket.sendMessage(new TextMessage(Utils.getString(menOut)));
+            } catch (Exception e) {
+                LOG.warn("Error while message sending.", e);
+            }
+        });
+    }
 }
