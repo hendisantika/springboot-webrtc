@@ -2,6 +2,7 @@ package com.hendisantika.springbootwebrtc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -52,4 +53,9 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         connectedUsers.put(session.getId(), session);
     }
 
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        LOG.info("[" + session.getId() + "] Connection closed " + session.getId() + " with status: " + status.getReason());
+        removeUserAndSendLogout(session.getId());
+    }
 }
