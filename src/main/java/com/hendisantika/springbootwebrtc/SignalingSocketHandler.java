@@ -58,4 +58,11 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         LOG.info("[" + session.getId() + "] Connection closed " + session.getId() + " with status: " + status.getReason());
         removeUserAndSendLogout(session.getId());
     }
+
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        LOG.info("[" + session.getId() + "] Connection error " + session.getId() + " with status: " + exception.getLocalizedMessage());
+        removeUserAndSendLogout(session.getId());
+    }
+
 }
