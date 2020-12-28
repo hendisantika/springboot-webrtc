@@ -65,4 +65,23 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         removeUserAndSendLogout(session.getId());
     }
 
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        LOG.info("handleTextMessage : {}", message.getPayload());
+
+        SignalMessage signalMessage = Utils.getObject(message.getPayload());
+
+        // with the destinationUser find the targeted socket, if any
+        String destinationUser = signalMessage.getReceiver();
+        WebSocketSession destSocket = connectedUsers.get(destinationUser);
+        // if the socket exists and is open, we go on
+        if (destSocket != null && destSocket.isOpen()) {
+            // set the sender as current sessionId.
+            signalMessage.setSender(session.getId());
+            final String resendingMessage = Utils.getString(signalMessage);
+            LOG.info("send message {} to {}", resendingMessage, destinationUser);
+            destSocket.sendMessage(new TextMessage(resendingMessage));
+        }
+    }
+
 }
