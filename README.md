@@ -1,5 +1,12 @@
 # springboot-webrtc
 
+A simple WebRTC video-chat signaling demo built with Spring Boot and WebSockets.
+
+## Requirements
+
+- JDK 25
+- Maven (or use the bundled `./mvnw` wrapper)
+
 ## Things to do list:
 
 1. Clone this repository: `https://github.com/hendisantika/springboot-webrtc.git`
@@ -8,3 +15,7 @@
 4. Open your favorite browser: https://localhost:8443
 
 Read this for instruction to create keystore: https://www.thomasvitale.com/https-spring-boot-ssl-certificate/
+
+## Screenshot
+
+![Spring Boot WebRTC Demo](screenshots/webrtc-demo.jpg)
