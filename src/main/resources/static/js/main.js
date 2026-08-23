@@ -138,7 +138,9 @@ function getRTCPeerConnectionObject(uuid) {
 
     var connection = new RTCPeerConnection(peerConnectionConfig);
 
-    connection.addStream(localStream);
+    localStream.getTracks().forEach(function (track) {
+        connection.addTrack(track, localStream);
+    });
 
     // handle on ice candidate
     connection.onicecandidate = function (event) {
@@ -152,8 +154,13 @@ function getRTCPeerConnectionObject(uuid) {
         }
     };
 
-    // handle on track / onaddstream
-    connection.onaddstream = function (event) {
+    // handle incoming remote tracks. onaddstream/addStream are deprecated and
+    // no longer fire in current browsers, which was causing the remote video
+    // to never update (appearing frozen).
+    connection.ontrack = function (event) {
+        if (document.getElementById(uuid)) {
+            return;
+        }
         console.log('Received new stream from ' + uuid);
         var video = document.createElement("video");
         container.appendChild(video);
@@ -162,7 +169,8 @@ function getRTCPeerConnectionObject(uuid) {
         video.height = 120;
         video.className += " videoElement";
         video.autoplay = true;
-        video.srcObject = event.stream;
+        video.playsInline = true;
+        video.srcObject = event.streams[0];
         video.addEventListener('click', function (event) {
             setBigVideo(uuid);
         }, false);
