@@ -1,6 +1,6 @@
 package com.hendisantika.springbootwebrtc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Created by IntelliJ IDEA.
